@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet data-dc-atomics>
+<template id="__bundler_thumbnail" data-bg-color="#0F5132">
+  <svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+    <rect width="80" height="56" fill="#0F5132"/>
+    <rect x="10" y="10" width="18" height="36" rx="4" fill="#F4F5F0"/>
+    <rect x="32" y="10" width="38" height="16" rx="4" fill="#16A34A"/>
+    <rect x="32" y="30" width="38" height="16" rx="4" fill="#F4F5F0"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#EDEFE9;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#D3D6C9;border-radius:8px}
+  input::placeholder{color:#9a9f92}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+  a{color:#0F5132}
+  a:hover{color:#16A34A}
+</style>
+</helmet>
+
+<sc-if value="{{ !loggedIn }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh;display:flex">
+    <div style="width:44%;min-width:420px;background:linear-gradient(160deg,#0F5132 0%,#16A34A 55%,#22C55E 100%);display:flex;flex-direction:column;justify-content:space-between;padding:56px;box-sizing:border-box;color:#fff">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z" stroke="#fff" stroke-width="1.8"/><path d="M9 7V5.5A3 3 0 0 1 12 2.5a3 3 0 0 1 3 3V7" stroke="#fff" stroke-width="1.8"/></svg>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.3px">Tienda Fácil</div>
+          <div style="font-size:13px;opacity:0.85;font-weight:600">Panel de control</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:34px;font-weight:800;line-height:1.15;letter-spacing:-0.5px;max-width:420px">Monitorea y gestiona tus ventas en un solo lugar</div>
+        <div style="font-size:15px;opacity:0.85;font-weight:500;margin-top:14px;max-width:400px;line-height:1.5">Controla usuarios, roles y el rendimiento de tu equipo de ventas en tiempo real.</div>
+      </div>
+      <div style="font-size:12.5px;opacity:0.7;font-weight:600">© 2026 Tienda Fácil</div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;box-sizing:border-box">
+      <div style="width:100%;max-width:360px">
+        <div style="font-size:24px;font-weight:800;color:#1a1f16">Inicia sesión</div>
+        <div style="font-size:14px;color:#8a8f85;font-weight:600;margin-top:4px">Accede con tu cuenta de administrador o vendedor</div>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:28px">
+          <div>
+            <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Usuario</div>
+            <input value="{{ username }}" onChange="{{ setUsername }}" placeholder="Nombre de usuario" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:12px;border:1.5px solid #E0E2D8;background:#fff;font-size:15px;font-family:inherit;outline:none;color:#1a1f16"/>
+          </div>
+          <div>
+            <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Contraseña</div>
+            <input type="password" value="{{ password }}" onChange="{{ setPassword }}" placeholder="••••••••" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:12px;border:1.5px solid #E0E2D8;background:#fff;font-size:15px;font-family:inherit;outline:none;color:#1a1f16"/>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px">
+          <a href="#" style="font-size:13px;font-weight:700;text-decoration:none">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button onClick="{{ login }}" disabled="{{ loginDisabled }}" style="width:100%;padding:15px;border:none;border-radius:14px;background:{{ loginBtnBg }};color:#fff;font-size:15.5px;font-weight:800;font-family:inherit;cursor:pointer;opacity:{{ loginBtnOpacity }};margin-top:22px">Ingresar</button>
+        <div style="font-size:12.5px;color:#9a9f92;font-weight:600;margin-top:18px;text-align:center">Demo: cualquier usuario y contraseña funcionan</div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh;display:flex;background:#EDEFE9">
+
+    <div style="width:250px;flex-shrink:0;background:#0F5132;display:flex;flex-direction:column;padding:24px 16px;box-sizing:border-box">
+      <div style="display:flex;align-items:center;gap:10px;padding:0 8px 24px">
+        <div style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z" stroke="#fff" stroke-width="1.8"/><path d="M9 7V5.5A3 3 0 0 1 12 2.5a3 3 0 0 1 3 3V7" stroke="#fff" stroke-width="1.8"/></svg>
+        </div>
+        <div style="color:#fff">
+          <div style="font-size:15px;font-weight:800;line-height:1.2">Tienda Fácil</div>
+          <div style="font-size:11px;opacity:0.75;font-weight:600">Panel de control</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:8px">
+        <div onClick="{{ goToDashboard }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:11px;cursor:pointer;background:{{ navDashboardBg }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" stroke="{{ navDashboardColor }}" stroke-width="1.8"/><rect x="13" y="3" width="8" height="5" rx="2" stroke="{{ navDashboardColor }}" stroke-width="1.8"/><rect x="13" y="12" width="8" height="9" rx="2" stroke="{{ navDashboardColor }}" stroke-width="1.8"/><rect x="3" y="15" width="8" height="6" rx="2" stroke="{{ navDashboardColor }}" stroke-width="1.8"/></svg>
+          <div style="font-size:14px;font-weight:700;color:{{ navDashboardColor }}">Monitoreo</div>
+        </div>
+        <div onClick="{{ goToUsers }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:11px;cursor:pointer;background:{{ navUsersBg }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="{{ navUsersColor }}" stroke-width="1.8"/><path d="M3.5 20c0-3.6 2.5-6 5.5-6s5.5 2.4 5.5 6" stroke="{{ navUsersColor }}" stroke-width="1.8" stroke-linecap="round"/><circle cx="17" cy="8.5" r="2.4" stroke="{{ navUsersColor }}" stroke-width="1.8"/><path d="M15.2 13.2c2.4.3 4.3 2.4 4.3 5.3" stroke="{{ navUsersColor }}" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div style="font-size:14px;font-weight:700;color:{{ navUsersColor }}">Usuarios y roles</div>
+        </div>
+        <div onClick="{{ goToCredits }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:11px;cursor:pointer;background:{{ navCreditsBg }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="{{ navCreditsColor }}" stroke-width="1.8"/><path d="M3 10h18" stroke="{{ navCreditsColor }}" stroke-width="1.8"/><path d="M7 14.5h5" stroke="{{ navCreditsColor }}" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div style="font-size:14px;font-weight:700;color:{{ navCreditsColor }}">Créditos</div>
+        </div>
+        <div onClick="{{ goToNewSale }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:11px;cursor:pointer;background:{{ navSaleBg }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h2l2.2 11.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 9H7" stroke="{{ navSaleColor }}" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="21" r="1.4" fill="{{ navSaleColor }}"/><circle cx="17" cy="21" r="1.4" fill="{{ navSaleColor }}"/></svg>
+          <div style="font-size:14px;font-weight:700;color:{{ navSaleColor }}">Nueva venta</div>
+        </div>
+      </div>
+
+      <div style="flex:1"></div>
+
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid rgba(255,255,255,0.14)">
+        <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);color:#0F5132;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ currentUserInitials }}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ currentUserName }}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);font-weight:600">{{ currentUserRole }}</div>
+        </div>
+        <div onClick="{{ logout }}" style="cursor:pointer;padding:6px;flex-shrink:0" title="Cerrar sesión">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M15 17l5-5-5-5M20 12H8" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" stroke-linecap="round"/><path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:32px 40px;box-sizing:border-box;flex:1">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+            <div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16">Monitoreo de ventas</div>
+              <div style="font-size:14px;color:#8a8f85;font-weight:600;margin-top:2px">Rendimiento del equipo en tiempo real</div>
+            </div>
+            <div style="display:flex;gap:6px;background:#fff;border:1.5px solid #E3E5DC;border-radius:12px;padding:4px">
+              <sc-for list="{{ periods }}" as="pd" hint-placeholder-count="3">
+                <div onClick="{{ pd.select }}" style="padding:8px 16px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:{{ pd.bg }};color:{{ pd.fg }}">{{ pd.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px">
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Ventas totales</div>
+              <div style="font-size:26px;font-weight:800;color:#0F5132;margin-top:8px">{{ kpiTotalFmt }}</div>
+              <div style="font-size:12.5px;color:#16A34A;font-weight:700;margin-top:4px">{{ kpiCountLabel }}</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Ticket promedio</div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16;margin-top:8px">{{ kpiAvgFmt }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">por venta</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Vendedor top</div>
+              <div style="font-size:19px;font-weight:800;color:#1a1f16;margin-top:8px">{{ kpiTopVendorName }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">{{ kpiTopVendorTotalFmt }}</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Vendedores activos</div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16;margin-top:8px">{{ kpiActiveVendors }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">de {{ kpiTotalVendors }} registrados</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.7fr 0.75fr;gap:16px;margin-top:16px;align-items:start">
+            <div style="background:#fff;border-radius:16px;padding:22px;border:1px solid #E3E5DC">
+              <div style="font-size:15px;font-weight:800;color:#1a1f16;margin-bottom:16px">Ventas recientes</div>
+              <div style="display:flex;flex-direction:column">
+                <div style="display:grid;grid-template-columns:1.8fr 1fr 0.9fr 0.7fr;gap:10px;padding:0 0 10px;border-bottom:1px solid #EEF0E9;font-size:11.5px;font-weight:700;color:#9a9f92;text-transform:uppercase;letter-spacing:0.3px">
+                  <div>Vendedor</div><div>Fecha</div><div>Pago</div><div style="text-align:right">Total</div>
+                </div>
+                <sc-for list="{{ recentSales }}" as="rs" hint-placeholder-count="6">
+                  <div style="display:grid;grid-template-columns:1.8fr 1fr 0.9fr 0.7fr;gap:10px;padding:12px 0;border-bottom:1px solid #F4F5F0;align-items:center">
+                    <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                      <div style="width:26px;height:26px;border-radius:50%;background:{{ rs.vendorColor }};color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ rs.vendorInitials }}</div>
+                      <div style="font-size:13.5px;font-weight:700;color:#1a1f16;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ rs.vendorName }}</div>
+                    </div>
+                    <div style="font-size:13px;color:#8a8f85;font-weight:600">{{ rs.dateLabel }}</div>
+                    <div style="font-size:13px;color:#4b5045;font-weight:600">{{ rs.paymentLabel }}</div>
+                    <div style="font-size:14px;font-weight:800;color:#0F5132;text-align:right">{{ rs.totalFmt }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ noRecentSales }}">
+                  <div style="text-align:center;padding:40px 20px;color:#9a9f92;font-size:14px;font-weight:600">Sin ventas en este período</div>
+                </sc-if>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:16px;padding:22px;border:1px solid #E3E5DC">
+              <div style="font-size:15px;font-weight:800;color:#1a1f16;margin-bottom:16px">Ranking de vendedores</div>
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ ranking }}" as="rk" hint-placeholder-count="3">
+                  <div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <div style="width:22px;height:22px;border-radius:50%;background:{{ rk.color }};color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ rk.initials }}</div>
+                        <div style="font-size:13.5px;font-weight:700;color:#1a1f16">{{ rk.name }}</div>
+                      </div>
+                      <div style="font-size:13.5px;font-weight:800;color:#0F5132">{{ rk.totalFmt }}</div>
+                    </div>
+                    <div style="height:8px;border-radius:5px;background:#F0F1EA;overflow:hidden">
+                      <div style="height:100%;border-radius:5px;background:{{ rk.color }};width:{{ rk.barPct }}%"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isUsers }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:32px 40px;box-sizing:border-box;flex:1">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+            <div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16">Usuarios y roles</div>
+              <div style="font-size:14px;color:#8a8f85;font-weight:600;margin-top:2px">Administra el acceso de tu equipo</div>
+            </div>
+            <button onClick="{{ openNewUser }}" style="display:flex;align-items:center;gap:8px;padding:12px 18px;border:none;border-radius:12px;background:#16A34A;color:#fff;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+              Nuevo usuario
+            </button>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:22px">
+            <sc-for list="{{ roleLegend }}" as="rl" hint-placeholder-count="3">
+              <div style="flex:1;background:#fff;border:1px solid #E3E5DC;border-radius:14px;padding:16px 18px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:{{ rl.color }}"></div>
+                  <div style="font-size:13.5px;font-weight:800;color:#1a1f16">{{ rl.name }}</div>
+                </div>
+                <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:6px;line-height:1.4">{{ rl.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#fff;border-radius:16px;border:1px solid #E3E5DC;margin-top:20px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1.4fr 1.6fr 1fr 0.8fr 0.8fr;gap:10px;padding:14px 20px;background:#F9FAF6;font-size:11.5px;font-weight:700;color:#9a9f92;text-transform:uppercase;letter-spacing:0.3px">
+              <div>Nombre</div><div>Correo</div><div>Rol</div><div>Estado</div><div style="text-align:right">Acciones</div>
+            </div>
+            <sc-for list="{{ usersList }}" as="u" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:1.4fr 1.6fr 1fr 0.8fr 0.8fr;gap:10px;padding:14px 20px;border-top:1px solid #F0F1EA;align-items:center">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                  <div style="width:30px;height:30px;border-radius:50%;background:{{ u.roleColor }};color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ u.initials }}</div>
+                  <div style="font-size:13.5px;font-weight:700;color:#1a1f16;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ u.name }}</div>
+                </div>
+                <div style="font-size:13px;color:#4b5045;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ u.email }}</div>
+                <div><div style="display:inline-flex;padding:4px 10px;border-radius:100px;background:{{ u.roleBg }};color:{{ u.roleColor }};font-size:12px;font-weight:700">{{ u.role }}</div></div>
+                <div onClick="{{ u.toggleActive }}" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:{{ u.statusColor }}"></div>
+                  <div style="font-size:12.5px;font-weight:700;color:{{ u.statusColor }}">{{ u.statusLabel }}</div>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end">
+                  <div onClick="{{ u.edit }}" style="width:30px;height:30px;border-radius:9px;background:#F4F5F0;display:flex;align-items:center;justify-content:center;cursor:pointer" title="Editar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 20h4L18.5 9.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L4 15v5Z" stroke="#4b5045" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ showUserModal }}">
+          <div onClick="{{ closeUserModal }}" style="position:fixed;inset:0;background:rgba(15,20,10,0.45);z-index:40;animation:fadeIn .18s ease"></div>
+          <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;background:#fff;border-radius:20px;padding:28px;box-sizing:border-box;z-index:41;animation:popIn .25s cubic-bezier(.2,.8,.3,1.2)">
+            <div style="font-size:18px;font-weight:800;color:#1a1f16;margin-bottom:20px">{{ userModalTitle }}</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Nombre completo</div>
+                <input value="{{ formName }}" onChange="{{ setFormName }}" placeholder="Nombre del usuario" style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;border:1.5px solid #E0E2D8;font-size:14.5px;font-family:inherit;outline:none;color:#1a1f16"/>
+              </div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Correo</div>
+                <input value="{{ formEmail }}" onChange="{{ setFormEmail }}" placeholder="correo@tiendafacil.com" style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;border:1.5px solid #E0E2D8;font-size:14.5px;font-family:inherit;outline:none;color:#1a1f16"/>
+              </div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Rol</div>
+                <div style="display:flex;gap:8px">
+                  <sc-for list="{{ roleOptions }}" as="ro" hint-placeholder-count="3">
+                    <div onClick="{{ ro.select }}" style="flex:1;text-align:center;padding:10px 0;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;background:{{ ro.bg }};color:{{ ro.fg }};border:1.5px solid {{ ro.border }}">{{ ro.name }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:24px">
+              <button onClick="{{ closeUserModal }}" style="flex:1;padding:13px;border:1.5px solid #D8DBCF;border-radius:12px;background:#fff;color:#1a1f16;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer">Cancelar</button>
+              <button onClick="{{ saveUser }}" disabled="{{ saveUserDisabled }}" style="flex:1;padding:13px;border:none;border-radius:12px;background:#16A34A;color:#fff;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer">Guardar</button>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ isCredits }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:32px 40px;box-sizing:border-box;flex:1">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+            <div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16">Créditos pendientes</div>
+              <div style="font-size:14px;color:#8a8f85;font-weight:600;margin-top:2px">Ventas a crédito y su estado de pago</div>
+            </div>
+            <div style="display:flex;gap:6px;background:#fff;border:1.5px solid #E3E5DC;border-radius:12px;padding:4px">
+              <sc-for list="{{ creditFilters }}" as="cf" hint-placeholder-count="3">
+                <div onClick="{{ cf.select }}" style="padding:8px 16px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:{{ cf.bg }};color:{{ cf.fg }}">{{ cf.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px">
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Pendiente de cobro</div>
+              <div style="font-size:26px;font-weight:800;color:#B45309;margin-top:8px">{{ creditPendingTotalFmt }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">{{ creditPendingCountLabel }}</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Cobrado</div>
+              <div style="font-size:26px;font-weight:800;color:#0F5132;margin-top:8px">{{ creditPaidTotalFmt }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">{{ creditPaidCountLabel }}</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #E3E5DC">
+              <div style="font-size:12.5px;font-weight:700;color:#8a8f85;text-transform:uppercase;letter-spacing:0.4px">Total en crédito</div>
+              <div style="font-size:26px;font-weight:800;color:#1a1f16;margin-top:8px">{{ creditGrandTotalFmt }}</div>
+              <div style="font-size:12.5px;color:#8a8f85;font-weight:600;margin-top:4px">{{ creditGrandCountLabel }}</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border-radius:16px;border:1px solid #E3E5DC;margin-top:20px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1.4fr 1.1fr 1fr 0.9fr 1fr 0.9fr;gap:10px;padding:14px 20px;background:#F9FAF6;font-size:11.5px;font-weight:700;color:#9a9f92;text-transform:uppercase;letter-spacing:0.3px">
+              <div>Cliente</div><div>Vendedor</div><div>Fecha</div><div>Monto</div><div>Estado</div><div style="text-align:right">Acción</div>
+            </div>
+            <sc-for list="{{ creditRows }}" as="cr" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 1fr 0.9fr 1fr 0.9fr;gap:10px;padding:14px 20px;border-top:1px solid #F0F1EA;align-items:center">
+                <div style="font-size:13.5px;font-weight:700;color:#1a1f16;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ cr.customerLabel }}</div>
+                <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                  <div style="width:24px;height:24px;border-radius:50%;background:{{ cr.vendorColor }};color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ cr.vendorInitials }}</div>
+                  <div style="font-size:13px;font-weight:600;color:#4b5045;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ cr.vendorName }}</div>
+                </div>
+                <div style="font-size:13px;color:#8a8f85;font-weight:600">{{ cr.dateLabel }}</div>
+                <div style="font-size:14px;font-weight:800;color:#1a1f16">{{ cr.totalFmt }}</div>
+                <div>
+                  <div style="display:inline-flex;align-items:center;gap:6px">
+                    <div style="width:8px;height:8px;border-radius:50%;background:{{ cr.statusColor }}"></div>
+                    <div style="font-size:12.5px;font-weight:700;color:{{ cr.statusColor }}">{{ cr.statusLabel }}</div>
+                  </div>
+                  <sc-if value="{{ cr.showPaidBy }}">
+                    <div style="font-size:11px;color:#9a9f92;font-weight:600;margin-top:2px">por {{ cr.paidBy }}</div>
+                  </sc-if>
+                </div>
+                <div style="text-align:right">
+                  <sc-if value="{{ cr.isPending }}">
+                    <button onClick="{{ cr.markPaid }}" style="padding:8px 14px;border:none;border-radius:9px;background:#16A34A;color:#fff;font-size:12.5px;font-weight:800;font-family:inherit;cursor:pointer">Marcar pagado</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noCreditRows }}">
+              <div style="text-align:center;padding:40px 20px;color:#9a9f92;font-size:14px;font-weight:600">Sin registros en esta vista</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isNewSale }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:32px 40px;box-sizing:border-box;flex:1;display:flex;flex-direction:column;min-height:0">
+          <div>
+            <div style="font-size:26px;font-weight:800;color:#1a1f16">Nueva venta</div>
+            <div style="font-size:14px;color:#8a8f85;font-weight:600;margin-top:2px">Registra una venta manualmente, igual que en la app</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:20px;flex:1;min-height:0">
+
+            <sc-if value="{{ !nsConfirmed }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border-radius:16px;border:1px solid #E3E5DC;padding:20px;display:flex;flex-direction:column;min-height:0">
+              <div style="display:flex;align-items:center;gap:8px;background:#F4F5F0;border-radius:12px;padding:11px 14px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8a8f85" stroke-width="2"/><path d="M21 21l-4-4" stroke="#8a8f85" stroke-width="2" stroke-linecap="round"/></svg>
+                <input value="{{ nsSearch }}" onChange="{{ setNsSearch }}" placeholder="Buscar producto" style="border:none;background:transparent;outline:none;color:#1a1f16;font-size:14px;font-weight:500;flex:1;font-family:inherit"/>
+              </div>
+              <div style="display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:4px">
+                <sc-for list="{{ nsCategories }}" as="c" hint-placeholder-count="5">
+                  <div onClick="{{ c.select }}" style="flex-shrink:0;padding:7px 14px;border-radius:100px;background:{{ c.bg }};color:{{ c.fg }};font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid {{ c.border }}">{{ c.name }}</div>
+                </sc-for>
+              </div>
+              <div style="flex:1;overflow-y:auto;margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start">
+                <sc-for list="{{ nsProducts }}" as="p" hint-placeholder-count="6">
+                  <div onClick="{{ p.add }}" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:1px solid #EEF0E9;cursor:pointer">
+                    <div style="width:38px;height:38px;border-radius:10px;flex-shrink:0;background:{{ p.swatchBg }}"></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:13px;font-weight:700;color:#1a1f16;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</div>
+                      <div style="font-size:12.5px;color:#0F5132;font-weight:800;margin-top:2px">{{ p.priceFmt }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:16px;border:1px solid #E3E5DC;padding:20px;display:flex;flex-direction:column;min-height:0">
+              <div style="font-size:15px;font-weight:800;color:#1a1f16">Carrito</div>
+              <div style="flex:1;overflow-y:auto;margin-top:12px">
+                <sc-if value="{{ nsCartEmpty }}">
+                  <div style="text-align:center;padding:30px 10px;color:#9a9f92;font-size:13.5px;font-weight:600">Agrega productos del catálogo</div>
+                </sc-if>
+                <sc-for list="{{ nsCartItems }}" as="ci" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F4F5F0">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:13px;font-weight:700;color:#1a1f16">{{ ci.name }}</div>
+                      <div style="font-size:12px;color:#8a8f85;font-weight:600">{{ ci.priceFmt }} c/u</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div onClick="{{ ci.dec }}" style="width:24px;height:24px;border-radius:8px;background:#F4F5F0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700">–</div>
+                      <div style="min-width:14px;text-align:center;font-size:13px;font-weight:800">{{ ci.qty }}</div>
+                      <div onClick="{{ ci.inc }}" style="width:24px;height:24px;border-radius:8px;background:#0F5132;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700">+</div>
+                    </div>
+                    <div style="font-size:13px;font-weight:800;color:#0F5132;width:52px;text-align:right">{{ ci.subtotalFmt }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="border-top:1px solid #EEF0E9;padding-top:14px;margin-top:6px">
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Cliente (opcional)</div>
+                <input value="{{ nsCustomer }}" onChange="{{ setNsCustomer }}" placeholder="Nombre del cliente" style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1.5px solid #E0E2D8;font-size:13.5px;font-family:inherit;outline:none;color:#1a1f16;margin-bottom:12px"/>
+
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Vendedor</div>
+                <div style="display:flex;gap:6px;margin-bottom:12px">
+                  <sc-for list="{{ nsVendorOptions }}" as="vo" hint-placeholder-count="3">
+                    <div onClick="{{ vo.select }}" style="flex:1;text-align:center;padding:8px 4px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;background:{{ vo.bg }};color:{{ vo.fg }};border:1.5px solid {{ vo.border }}">{{ vo.initials }}</div>
+                  </sc-for>
+                </div>
+
+                <div style="font-size:12.5px;font-weight:700;color:#4b5045;margin-bottom:6px">Método de pago</div>
+                <div style="display:flex;gap:6px;margin-bottom:14px">
+                  <sc-for list="{{ nsPaymentOptions }}" as="pm" hint-placeholder-count="4">
+                    <div onClick="{{ pm.select }}" style="flex:1;text-align:center;padding:8px 4px;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ pm.bg }};color:{{ pm.fg }};border:1.5px solid {{ pm.border }}">{{ pm.name }}</div>
+                  </sc-for>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+                  <div style="font-size:14px;font-weight:700;color:#4b5045">Total</div>
+                  <div style="font-size:19px;font-weight:800;color:#0F5132">{{ nsTotalFmt }}</div>
+                </div>
+                <button onClick="{{ nsConfirmSale }}" disabled="{{ nsConfirmDisabled }}" style="width:100%;padding:14px;border:none;border-radius:12px;background:{{ nsConfirmBg }};color:#fff;font-size:14.5px;font-weight:800;font-family:inherit;cursor:pointer">Confirmar venta</button>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ nsConfirmed }}">
+              <div style="grid-column:1/3;background:#fff;border-radius:16px;border:1px solid #E3E5DC;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px">
+                <div style="width:76px;height:76px;border-radius:50%;background:#16A34A;display:flex;align-items:center;justify-content:center;animation:popIn .45s cubic-bezier(.2,.9,.3,1.2)">
+                  <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l5 5L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div style="font-size:20px;font-weight:800;color:#1a1f16;margin-top:18px">Venta registrada</div>
+                <div style="font-size:13.5px;color:#8a8f85;font-weight:600;margin-top:4px">{{ nsLastVendorName }} · {{ nsLastPaymentLabel }}</div>
+                <div style="font-size:30px;font-weight:800;color:#0F5132;margin-top:14px">{{ nsLastTotalFmt }}</div>
+                <button onClick="{{ nsReset }}" style="margin-top:24px;padding:14px 28px;border:none;border-radius:12px;background:#16A34A;color:#fff;font-size:14.5px;font-weight:800;font-family:inherit;cursor:pointer">Registrar otra venta</button>
+              </div>
+            </sc-if>
+
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+const PRODUCT_DATA = [
+  { id: 'p1', name: 'Papas Fritas Onduladas 170g', category: 'Botanas', price: 18.50 },
+  { id: 'p2', name: 'Cacahuate Japonés 250g', category: 'Botanas', price: 22.00 },
+  { id: 'p3', name: 'Chicharrón de Harina 150g', category: 'Botanas', price: 14.75 },
+  { id: 'p4', name: 'Churritos Enchilados 200g', category: 'Botanas', price: 16.00 },
+  { id: 'p5', name: 'Salsa Botanera 500ml', category: 'Salsas', price: 24.50 },
+  { id: 'p6', name: 'Salsa Valentina 370ml', category: 'Salsas', price: 19.90 },
+  { id: 'p7', name: 'Chamoy Líquido 500ml', category: 'Salsas', price: 23.00 },
+  { id: 'p8', name: 'Bolsa Celofán Transparente 100pz', category: 'Bolsas de Celofán', price: 32.00 },
+  { id: 'p9', name: 'Bolsa Celofán Estampada 50pz', category: 'Bolsas de Celofán', price: 28.50 },
+  { id: 'p10', name: 'Chile Piquín Molido 100g', category: 'Condimentos', price: 15.25 },
+  { id: 'p11', name: 'Limón en Polvo 100g', category: 'Condimentos', price: 13.00 },
+  { id: 'p12', name: 'Sal de Grano 1kg', category: 'Condimentos', price: 10.50 },
+];
+
+const CATEGORY_COLORS = {
+  'Botanas': { bg: 'oklch(70% 0.16 55)', chip: 'oklch(94% 0.03 55)', chipFg: 'oklch(38% 0.1 55)' },
+  'Salsas': { bg: 'oklch(64% 0.18 25)', chip: 'oklch(94% 0.03 25)', chipFg: 'oklch(38% 0.1 25)' },
+  'Bolsas de Celofán': { bg: 'oklch(65% 0.14 235)', chip: 'oklch(94% 0.03 235)', chipFg: 'oklch(38% 0.1 235)' },
+  'Condimentos': { bg: 'oklch(62% 0.16 300)', chip: 'oklch(94% 0.03 300)', chipFg: 'oklch(38% 0.1 300)' },
+};
+
+const VENDORS = [
+  { id: 'v1', name: 'Carlos Ruiz', initials: 'CR', color: 'oklch(65% 0.16 25)' },
+  { id: 'v2', name: 'María López', initials: 'ML', color: 'oklch(65% 0.14 235)' },
+  { id: 'v3', name: 'Ana Gómez', initials: 'AG', color: 'oklch(62% 0.16 300)' },
+];
+
+const PAYMENT_METHODS = [
+  { id: 'efectivo', name: 'Efectivo' },
+  { id: 'tarjeta', name: 'Tarjeta' },
+  { id: 'transferencia', name: 'Transferencia' },
+  { id: 'credito', name: 'Crédito' },
+];
+
+const ROLE_COLORS = {
+  'Administrador': { bg: '#FCE9E9', fg: '#B91C1C' },
+  'Supervisor': { bg: '#FEF3E0', fg: '#B45309' },
+  'Vendedor': { bg: '#EAF7EF', fg: '#0F5132' },
+};
+
+const USERS_SEED = [
+  { id: 'u1', name: 'Ana Gómez', email: 'ana.gomez@tiendafacil.com', role: 'Administrador', active: true },
+  { id: 'u2', name: 'Jorge Templado', email: 'jorge.templado@tiendafacil.com', role: 'Supervisor', active: true },
+  { id: 'u3', name: 'Carlos Ruiz', email: 'carlos.ruiz@tiendafacil.com', role: 'Vendedor', active: true },
+  { id: 'u4', name: 'María López', email: 'maria.lopez@tiendafacil.com', role: 'Vendedor', active: true },
+  { id: 'u5', name: 'Luis Peña', email: 'luis.pena@tiendafacil.com', role: 'Vendedor', active: false },
+];
+
+function buildSales() {
+  const now = new Date();
+  const raw = [
+    ['v1', 0, 9, 30, ['p1','p1','p5'], 'efectivo', null],
+    ['v2', 0, 11, 5, ['p8','p10'], 'tarjeta', null],
+    ['v3', 0, 14, 20, ['p2','p2','p2'], 'transferencia', null],
+    ['v1', 1, 10, 0, ['p6'], 'efectivo', null],
+    ['v1', 1, 16, 40, ['p9','p11'], 'credito', 'Josefina Marroquín'],
+    ['v2', 1, 12, 15, ['p3','p3'], 'efectivo', null],
+    ['v3', 2, 9, 50, ['p4','p12'], 'tarjeta', null],
+    ['v2', 2, 13, 25, ['p1'], 'efectivo', null],
+    ['v1', 3, 15, 10, ['p7','p7'], 'transferencia', null],
+    ['v3', 3, 10, 45, ['p5','p6','p10'], 'efectivo', null],
+    ['v2', 4, 9, 20, ['p8'], 'tarjeta', null],
+    ['v1', 4, 17, 0, ['p2','p3'], 'efectivo', null],
+    ['v3', 5, 11, 30, ['p11','p12'], 'credito', 'Distribuidora El Sol'],
+    ['v2', 5, 15, 55, ['p1','p1'], 'efectivo', null],
+    ['v1', 6, 12, 40, ['p9'], 'transferencia', null],
+    ['v3', 6, 18, 5, ['p4','p4','p4'], 'efectivo', null],
+    ['v2', 7, 10, 10, ['p6','p7'], 'tarjeta', null],
+    ['v1', 8, 9, 45, ['p10','p11','p12'], 'efectivo', null],
+    ['v2', 3, 16, 20, ['p8','p9'], 'credito', 'Roberto Castillo'],
+    ['v1', 9, 11, 10, ['p1','p5','p7'], 'credito', 'Josefina Marroquín'],
+    ['v3', 10, 9, 15, ['p2','p10'], 'credito', 'Distribuidora El Sol'],
+  ];
+  return raw.map((r, i) => {
+    const [vendorId, daysAgo, h, m, itemIds, paymentMethod, customer] = r;
+    const date = new Date(now);
+    date.setDate(date.getDate() - daysAgo);
+    date.setHours(h, m, 0, 0);
+    const counts = {};
+    itemIds.forEach(id => counts[id] = (counts[id] || 0) + 1);
+    const items = Object.entries(counts).map(([id, qty]) => {
+      const p = PRODUCT_DATA.find(x => x.id === id);
+      return { name: p.name, qty, price: p.price, subtotal: p.price * qty };
+    });
+    const total = items.reduce((a, it) => a + it.subtotal, 0);
+    return { id: 'S' + (i + 1).toString().padStart(3, '0'), vendorId, date, items, total, paymentMethod, customer };
+  });
+}
+const SALES_SEED = buildSales();
+
+function fmt(n) { return '$' + n.toFixed(2); }
+function initialsOf(name) { return name.trim().split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase(); }
+
+class Component extends DCLogic {
+  state = {
+    loggedIn: false,
+    username: '', password: '',
+    screen: 'dashboard',
+    period: '7d',
+    users: USERS_SEED,
+    showUserModal: false, editingUserId: null,
+    formName: '', formEmail: '', formRole: 'Vendedor',
+    nsSearch: '', nsCategory: 'Todos', nsCart: {}, nsVendorId: 'v1', nsCustomer: '', nsPayment: null,
+    nsConfirmed: false, nsLast: null,
+    creditFilter: 'pendiente', creditStatus: {},
+  };
+
+  setUsername = (e) => this.setState({ username: e.target.value });
+  setPassword = (e) => this.setState({ password: e.target.value });
+  login = () => { if (this.state.username.trim() && this.state.password.trim()) this.setState({ loggedIn: true }); };
+  logout = () => this.setState({ loggedIn: false, username: '', password: '', screen: 'dashboard' });
+
+  goTo = (screen) => this.setState({ screen });
+  selectPeriod = (p) => this.setState({ period: p });
+
+  openNewUser = () => this.setState({ showUserModal: true, editingUserId: null, formName: '', formEmail: '', formRole: 'Vendedor' });
+  editUser = (id) => {
+    const u = this.state.users.find(x => x.id === id);
+    this.setState({ showUserModal: true, editingUserId: id, formName: u.name, formEmail: u.email, formRole: u.role });
+  };
+  closeUserModal = () => this.setState({ showUserModal: false });
+  setFormName = (e) => this.setState({ formName: e.target.value });
+  setFormEmail = (e) => this.setState({ formEmail: e.target.value });
+  selectFormRole = (role) => this.setState({ formRole: role });
+  saveUser = () => {
+    const { editingUserId, formName, formEmail, formRole, users } = this.state;
+    if (!formName.trim()) return;
+    if (editingUserId) {
+      this.setState({ users: users.map(u => u.id === editingUserId ? { ...u, name: formName, email: formEmail, role: formRole } : u), showUserModal: false });
+    } else {
+      const newUser = { id: 'u' + Date.now(), name: formName, email: formEmail, role: formRole, active: true };
+      this.setState({ users: [newUser, ...users], showUserModal: false });
+    }
+  };
+  toggleUserActive = (id) => this.setState(s => ({ users: s.users.map(u => u.id === id ? { ...u, active: !u.active } : u) }));
+
+  setNsSearch = (e) => this.setState({ nsSearch: e.target.value });
+  selectNsCategory = (cat) => this.setState({ nsCategory: cat });
+  nsAdd = (id) => this.setState(s => ({ nsCart: { ...s.nsCart, [id]: (s.nsCart[id] || 0) + 1 } }));
+  nsInc = (id) => this.setState(s => ({ nsCart: { ...s.nsCart, [id]: (s.nsCart[id] || 0) + 1 } }));
+  nsDec = (id) => this.setState(s => {
+    const q = (s.nsCart[id] || 0) - 1;
+    const cart = { ...s.nsCart };
+    if (q <= 0) delete cart[id]; else cart[id] = q;
+    return { nsCart: cart };
+  });
+  setNsCustomer = (e) => this.setState({ nsCustomer: e.target.value });
+  selectNsVendor = (id) => this.setState({ nsVendorId: id });
+  selectNsPayment = (id) => this.setState({ nsPayment: id });
+  nsConfirmSale = () => {
+    const { nsCart, nsPayment, nsVendorId, nsCustomer } = this.state;
+    if (!nsPayment || Object.keys(nsCart).length === 0) return;
+    const items = Object.entries(nsCart).map(([id, qty]) => {
+      const p = PRODUCT_DATA.find(x => x.id === id);
+      return { name: p.name, qty, price: p.price, subtotal: p.price * qty };
+    });
+    const total = items.reduce((a, it) => a + it.subtotal, 0);
+    const vendor = VENDORS.find(v => v.id === nsVendorId);
+    const pm = PAYMENT_METHODS.find(p => p.id === nsPayment);
+    this.setState({ nsConfirmed: true, nsLast: { vendorName: vendor.name, paymentLabel: pm.name, totalFmt: fmt(total) } });
+  };
+  nsReset = () => this.setState({ nsConfirmed: false, nsCart: {}, nsPayment: null, nsCustomer: '', nsLast: null });
+
+  selectCreditFilter = (f) => this.setState({ creditFilter: f });
+  markCreditPaid = (id) => {
+    const paidBy = this.state.username.trim() || 'Administrador';
+    this.setState(s => ({ creditStatus: { ...s.creditStatus, [id]: { paid: true, paidBy, paidAt: new Date() } } }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const currentUserName = s.username.trim();
+    const currentUserInitials = currentUserName ? initialsOf(currentUserName) : '';
+
+    const now = new Date();
+    const periodDays = { hoy: 1, '7d': 7, '30d': 30 }[s.period];
+    const cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - periodDays); cutoff.setHours(0,0,0,0);
+    const salesInPeriod = SALES_SEED.filter(sale => sale.date >= cutoff);
+
+    const periods = [
+      { id: 'hoy', label: 'Hoy' },
+      { id: '7d', label: '7 días' },
+      { id: '30d', label: '30 días' },
+    ].map(p => ({
+      ...p,
+      select: () => this.selectPeriod(p.id),
+      bg: s.period === p.id ? '#0F5132' : 'transparent',
+      fg: s.period === p.id ? '#fff' : '#4b5045',
+    }));
+
+    const kpiTotal = salesInPeriod.reduce((a, sale) => a + sale.total, 0);
+    const kpiCount = salesInPeriod.length;
+    const kpiAvg = kpiCount ? kpiTotal / kpiCount : 0;
+
+    const totalsByVendor = {};
+    salesInPeriod.forEach(sale => { totalsByVendor[sale.vendorId] = (totalsByVendor[sale.vendorId] || 0) + sale.total; });
+    const rankingRaw = VENDORS.map(v => ({ ...v, total: totalsByVendor[v.id] || 0 })).sort((a, b) => b.total - a.total);
+    const maxTotal = rankingRaw.length ? rankingRaw[0].total : 0;
+    const ranking = rankingRaw.map(v => ({
+      ...v, totalFmt: fmt(v.total),
+      barPct: maxTotal > 0 ? Math.max(4, Math.round((v.total / maxTotal) * 100)) : 4,
+    }));
+    const topVendor = rankingRaw[0];
+
+    const dias = ['dom','lun','mar','mié','jue','vie','sáb'];
+    const recentSales = [...salesInPeriod].sort((a,b) => b.date - a.date).slice(0, 8).map(sale => {
+      const v = VENDORS.find(x => x.id === sale.vendorId);
+      const pm = PAYMENT_METHODS.find(p => p.id === sale.paymentMethod);
+      return {
+        vendorName: v.name, vendorInitials: v.initials, vendorColor: v.color,
+        dateLabel: `${dias[sale.date.getDay()]} ${sale.date.getDate()}/${sale.date.getMonth()+1} · ${sale.date.getHours().toString().padStart(2,'0')}:${sale.date.getMinutes().toString().padStart(2,'0')}`,
+        paymentLabel: pm.name, totalFmt: fmt(sale.total),
+      };
+    });
+
+    const roleLegend = [
+      { name: 'Administrador', color: '#B91C1C', desc: 'Acceso total: usuarios, roles, ventas y configuración.' },
+      { name: 'Supervisor', color: '#B45309', desc: 'Monitorea ventas y gestiona al equipo de vendedores.' },
+      { name: 'Vendedor', color: '#0F5132', desc: 'Registra ventas y consulta su propio historial.' },
+    ];
+
+    const usersList = s.users.map(u => {
+      const rc = ROLE_COLORS[u.role];
+      return {
+        ...u,
+        initials: initialsOf(u.name),
+        roleColor: rc.fg, roleBg: rc.bg,
+        statusColor: u.active ? '#16A34A' : '#9a9f92',
+        statusLabel: u.active ? 'Activo' : 'Inactivo',
+        toggleActive: () => this.toggleUserActive(u.id),
+        edit: () => this.editUser(u.id),
+      };
+    });
+
+    const roleOptions = ['Administrador', 'Supervisor', 'Vendedor'].map(r => {
+      const active = s.formRole === r;
+      const rc = ROLE_COLORS[r];
+      return { name: r, select: () => this.selectFormRole(r), bg: active ? rc.bg : '#fff', fg: active ? rc.fg : '#8a8f85', border: active ? rc.fg : '#E0E2D8' };
+    });
+
+    const nsCategoryNames = ['Todos', ...Object.keys(CATEGORY_COLORS)];
+    const nsCategories = nsCategoryNames.map(name => {
+      const active = s.nsCategory === name;
+      const c = CATEGORY_COLORS[name];
+      return {
+        name, select: () => this.selectNsCategory(name),
+        bg: active ? (c ? c.bg : '#0F5132') : '#fff',
+        fg: active ? '#fff' : (c ? c.chipFg : '#4b5045'),
+        border: active ? 'transparent' : '#E3E5DC',
+      };
+    });
+    const nsFiltered = PRODUCT_DATA.filter(p =>
+      (s.nsCategory === 'Todos' || p.category === s.nsCategory) &&
+      p.name.toLowerCase().includes(s.nsSearch.toLowerCase())
+    );
+    const nsProducts = nsFiltered.map(p => ({
+      ...p, priceFmt: fmt(p.price), swatchBg: CATEGORY_COLORS[p.category].bg, add: () => this.nsAdd(p.id),
+    }));
+
+    const nsCartEntries = Object.entries(s.nsCart);
+    const nsCartItems = nsCartEntries.map(([id, qty]) => {
+      const p = PRODUCT_DATA.find(x => x.id === id);
+      return { id, qty, name: p.name, priceFmt: fmt(p.price), subtotalFmt: fmt(p.price * qty), inc: () => this.nsInc(id), dec: () => this.nsDec(id) };
+    });
+    const nsTotal = nsCartEntries.reduce((a, [id, q]) => a + PRODUCT_DATA.find(x => x.id === id).price * q, 0);
+
+    const nsVendorOptions = VENDORS.map(v => ({
+      ...v, select: () => this.selectNsVendor(v.id),
+      bg: s.nsVendorId === v.id ? v.color : '#fff', fg: s.nsVendorId === v.id ? '#fff' : '#4b5045',
+      border: s.nsVendorId === v.id ? 'transparent' : '#E0E2D8',
+    }));
+    const nsPaymentOptions = PAYMENT_METHODS.map(pm => ({
+      ...pm, select: () => this.selectNsPayment(pm.id),
+      bg: s.nsPayment === pm.id ? '#0F5132' : '#fff', fg: s.nsPayment === pm.id ? '#fff' : '#4b5045',
+      border: s.nsPayment === pm.id ? 'transparent' : '#E0E2D8',
+    }));
+
+    const activeVendorCount = VENDORS.length;
+
+    const creditSales = SALES_SEED.filter(sale => sale.paymentMethod === 'credito');
+    const creditFilters = [
+      { id: 'pendiente', label: 'Pendientes' },
+      { id: 'pagado', label: 'Pagados' },
+      { id: 'todos', label: 'Todos' },
+    ].map(f => ({
+      ...f, select: () => this.selectCreditFilter(f.id),
+      bg: s.creditFilter === f.id ? '#0F5132' : 'transparent',
+      fg: s.creditFilter === f.id ? '#fff' : '#4b5045',
+    }));
+    const creditRowsAll = creditSales.map(sale => {
+      const v = VENDORS.find(x => x.id === sale.vendorId);
+      const st = s.creditStatus[sale.id];
+      const paid = !!(st && st.paid);
+      return {
+        id: sale.id,
+        customerLabel: sale.customer || 'Sin cliente',
+        vendorName: v.name, vendorInitials: v.initials, vendorColor: v.color,
+        dateLabel: `${dias[sale.date.getDay()]} ${sale.date.getDate()}/${sale.date.getMonth()+1}`,
+        totalFmt: fmt(sale.total),
+        isPending: !paid,
+        statusColor: paid ? '#16A34A' : '#B45309',
+        statusLabel: paid ? 'Pagado' : 'Pendiente',
+        showPaidBy: paid, paidBy: paid ? st.paidBy : '',
+        markPaid: () => this.markCreditPaid(sale.id),
+      };
+    });
+    const creditRows = creditRowsAll.filter(cr => {
+      if (s.creditFilter === 'pendiente') return cr.isPending;
+      if (s.creditFilter === 'pagado') return !cr.isPending;
+      return true;
+    });
+    const creditPendingRows = creditRowsAll.filter(cr => cr.isPending);
+    const creditPaidRows = creditRowsAll.filter(cr => !cr.isPending);
+    const sumFmtRows = (rows) => rows.reduce((a, cr) => a + parseFloat(cr.totalFmt.slice(1)), 0);
+    const creditPendingTotal = sumFmtRows(creditPendingRows);
+    const creditPaidTotal = sumFmtRows(creditPaidRows);
+    const creditGrandTotal = creditPendingTotal + creditPaidTotal;
+    const countLabel = (n) => `${n} registro${n === 1 ? '' : 's'}`;
+
+    return {
+      loggedIn: s.loggedIn,
+      username: s.username, setUsername: this.setUsername,
+      password: s.password, setPassword: this.setPassword,
+      login: this.login, logout: this.logout,
+      loginDisabled: !(s.username.trim() && s.password.trim()),
+      loginBtnBg: (s.username.trim() && s.password.trim()) ? '#16A34A' : '#A9AD9F',
+      loginBtnOpacity: (s.username.trim() && s.password.trim()) ? 1 : 0.7,
+      currentUserName, currentUserInitials, currentUserRole: 'Administrador',
+
+      isDashboard: s.screen === 'dashboard', isUsers: s.screen === 'users', isNewSale: s.screen === 'newsale', isCredits: s.screen === 'credits',
+      goToDashboard: () => this.goTo('dashboard'), goToUsers: () => this.goTo('users'), goToNewSale: () => this.goTo('newsale'), goToCredits: () => this.goTo('credits'),
+      navDashboardBg: s.screen === 'dashboard' ? 'rgba(255,255,255,0.14)' : 'transparent',
+      navDashboardColor: s.screen === 'dashboard' ? '#fff' : 'rgba(255,255,255,0.6)',
+      navUsersBg: s.screen === 'users' ? 'rgba(255,255,255,0.14)' : 'transparent',
+      navUsersColor: s.screen === 'users' ? '#fff' : 'rgba(255,255,255,0.6)',
+      navSaleBg: s.screen === 'newsale' ? 'rgba(255,255,255,0.14)' : 'transparent',
+      navSaleColor: s.screen === 'newsale' ? '#fff' : 'rgba(255,255,255,0.6)',
+      navCreditsBg: s.screen === 'credits' ? 'rgba(255,255,255,0.14)' : 'transparent',
+      navCreditsColor: s.screen === 'credits' ? '#fff' : 'rgba(255,255,255,0.6)',
+
+      periods,
+      kpiTotalFmt: fmt(kpiTotal), kpiCountLabel: `${kpiCount} venta${kpiCount === 1 ? '' : 's'}`,
+      kpiAvgFmt: fmt(kpiAvg),
+      kpiTopVendorName: topVendor ? topVendor.name : '—', kpiTopVendorTotalFmt: topVendor ? fmt(topVendor.total) : '',
+      kpiActiveVendors: activeVendorCount, kpiTotalVendors: activeVendorCount,
+      recentSales, noRecentSales: recentSales.length === 0,
+      ranking,
+
+      roleLegend,
+      usersList,
+      showUserModal: s.showUserModal, closeUserModal: this.closeUserModal, openNewUser: this.openNewUser,
+      userModalTitle: s.editingUserId ? 'Editar usuario' : 'Nuevo usuario',
+      formName: s.formName, setFormName: this.setFormName,
+      formEmail: s.formEmail, setFormEmail: this.setFormEmail,
+      roleOptions,
+      saveUser: this.saveUser, saveUserDisabled: !s.formName.trim(),
+
+      nsSearch: s.nsSearch, setNsSearch: this.setNsSearch,
+      nsCategories, nsProducts,
+      nsCartItems, nsCartEmpty: nsCartItems.length === 0,
+      nsCustomer: s.nsCustomer, setNsCustomer: this.setNsCustomer,
+      nsVendorOptions, nsPaymentOptions,
+      nsTotalFmt: fmt(nsTotal),
+      nsConfirmSale: this.nsConfirmSale,
+      nsConfirmDisabled: nsCartItems.length === 0 || !s.nsPayment,
+      nsConfirmBg: (nsCartItems.length === 0 || !s.nsPayment) ? '#A9AD9F' : '#16A34A',
+      nsConfirmed: s.nsConfirmed, nsReset: this.nsReset,
+      nsLastVendorName: s.nsLast ? s.nsLast.vendorName : '',
+      nsLastPaymentLabel: s.nsLast ? s.nsLast.paymentLabel : '',
+      nsLastTotalFmt: s.nsLast ? s.nsLast.totalFmt : '',
+
+      creditFilters, creditRows, noCreditRows: creditRows.length === 0,
+      creditPendingTotalFmt: fmt(creditPendingTotal), creditPendingCountLabel: countLabel(creditPendingRows.length),
+      creditPaidTotalFmt: fmt(creditPaidTotal), creditPaidCountLabel: countLabel(creditPaidRows.length),
+      creditGrandTotalFmt: fmt(creditGrandTotal), creditGrandCountLabel: countLabel(creditRowsAll.length),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
